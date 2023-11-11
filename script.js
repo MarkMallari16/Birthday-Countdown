@@ -21,7 +21,7 @@ function birthdayCountdown(targetDate) {
         seconds %= 60;
 
         displayMessage(formatTime(days), formatTime(hours), formatTime(minutes), formatTime(seconds));
-        setTimeout(updateTimer, 1000);
+        requestAnimationFrame(updateTimer);
     };
 
     const displayMessage = (days, hours, minutes, seconds) => {
@@ -46,7 +46,7 @@ function birthdayCountdown(targetDate) {
     };
 
     updateTimer();
-
+    
 }
 
 const birthdayDate = new Date("2023-11-16T12:00:00Z");
@@ -61,5 +61,4 @@ if (
     mainContainer.style.display = "none";
     resultContainer.classList.add("show-result-container");
 }
-
 birthdayCountdown(birthdayDate);
