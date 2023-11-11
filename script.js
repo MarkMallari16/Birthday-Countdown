@@ -5,45 +5,61 @@ function birthdayCountdown(targetDate) {
 
         let seconds = Math.floor(timeDifference / 1000);
 
+        if (seconds <= 0) {
+            displayMessage("0", "0", "0", "0");
+            playHappyBirthdaySong();
+            return;
+        }
+
+        const days = Math.floor(seconds / (24 * 3600));
+        seconds %= 24 * 3600;
+
+        const hours = Math.floor(seconds / 3600);
+        seconds %= 3600;
+
+        const minutes = Math.floor(seconds / 60);
+        seconds %= 60;
+
+        displayMessage(formatTime(days), formatTime(hours), formatTime(minutes), formatTime(seconds));
+        setTimeout(updateTimer, 1000);
+    };
+
+    const displayMessage = (days, hours, minutes, seconds) => {
         const daysCountElement = document.getElementById("daysCount");
         const hoursCountElement = document.getElementById("hoursCount");
         const minutesCountElement = document.getElementById("minutesCount");
         const secondsCountElement = document.getElementById("secondsCount");
 
-        if (seconds > 0) {
-            const days = Math.floor(seconds / (24 * 3600));
-            seconds %= 24 * 3600;
+        daysCountElement.textContent = days;
+        hoursCountElement.textContent = hours;
+        minutesCountElement.textContent = minutes;
+        secondsCountElement.textContent = seconds;
+    };
 
-            const hours = Math.floor(seconds / 3600);
-            seconds %= 3600;
-
-            const minutes = Math.floor(seconds / 60);
-            seconds %= 60;
-
-            daysCountElement.textContent = formatTime(days);
-            hoursCountElement.textContent = formatTime(hours);
-            minutesCountElement.textContent = formatTime(minutes);
-            secondsCountElement.textContent = formatTime(seconds);
-
-            setTimeout(updateTimer, 1000);
-        } else {
-            daysCountElement.textContent = "00";
-            hoursCountElement.textContent = "00";
-            minutesCountElement.textContent = "00";
-            secondsCountElement.textContent = "00";
-          
-        }
-    }
     const formatTime = (time) => {
         return time < 10 ? `0${time}` : time;
-    }
+    };
+
     const playHappyBirthdaySong = () => {
         const audio = document.getElementById("happyBirthdayAudio");
         audio.play();
-    }
+    };
+
     updateTimer();
-    playHappyBirthdaySong();
+
 }
 
-const birthdayDate = new Date("2023-11-16");
+const birthdayDate = new Date("2023-11-16T12:00:00Z");
+const currentDate = new Date();
+const mainContainer = document.getElementById("main");
+const resultContainer = document.getElementById("resultContainer");
+
+if (
+    birthdayDate.getDate() === currentDate.getDate() &&
+    birthdayDate.getMonth() === currentDate.getMonth()
+) {
+    mainContainer.style.display = "none";
+    resultContainer.classList.add("show-result-container");
+}
+
 birthdayCountdown(birthdayDate);
